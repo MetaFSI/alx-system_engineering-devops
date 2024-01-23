@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
-# installing engine x server
-sudo apt-get -y update
-sudo apt-get -y install nginx
-echo 'Hello World!' > /var/www/html/index.nginx-debian.html
-sudo service nginx start
+
+# Install Nginx
+apt-get update
+apt-get -y install nginx
+
+# Allow Nginx through the firewall
+ufw allow 'Nginx HTTP'
+
+# Configure the default index page
+echo "Hello World!" > /var/www/html/index.html
+
+# Start Nginx service
+service nginx start
