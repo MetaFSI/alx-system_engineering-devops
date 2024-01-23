@@ -1,7 +1,29 @@
 #!/usr/bin/env bash
-# install engine x server
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
-service nginx start
+# Configures a new ubuntu machine by install
+
+echo -e "Updating and installing Nginx.\n"
+sudo apt-get update -y -qq && \
+	 sudo apt-get install nginx -y
+
+echo -e "\nSetting up some minor stuff.\n"
+
+# start nginx service
+sudo service nginx start
+
+# allow nginx on firewall
+sudo ufw allow 'Nginx HTTP'
+
+# user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+# Backup default index
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+
+# Creat index
+echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+
+# Restart nginx
+sudo service nginx restart
+
+echo -e "\nCompleted. ✅\n"
