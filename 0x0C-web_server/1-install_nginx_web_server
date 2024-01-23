@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-
-# Install Nginx
+# install engine x server
 apt-get update
 apt-get -y install nginx
-
-# Allow Nginx through the firewall
 ufw allow 'Nginx HTTP'
-
-# Configure the default index page
 echo "Hello World!" > /var/www/html/index.html
-
-# Start Nginx service
 service nginx start
