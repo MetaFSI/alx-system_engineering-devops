@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A script that displays domain informations for a domain
+# A script that displays domain dns informations for a domain
 domaininfo () {
 	answer_section=$(dig "$1" | grep -A1 'ANSWER SECTION' | tail -n 1)
 
