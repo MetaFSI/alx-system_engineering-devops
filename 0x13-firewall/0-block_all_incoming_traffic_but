@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Configure a ufw firewall to block all incoming trafics
+# Configure a ufw firewall to block all incoming trafic
 # Except for TCP ports 22, 80 and 443
 
 sudo apt-get -y update
