@@ -2,30 +2,31 @@
 """ Script that uses JSONPlaceholder API get informations about employee """
 import requests
 import sys
-import csv
+
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: {} <employee_id>".format(sys.argv[0]))
+        sys.exit(1)
+
     url = 'https://jsonplaceholder.typicode.com/'
 
     user_id = sys.argv[1]
-    user_url = '{}users/{}'.format(url, user_id)
-    res = requests.get(user_url)
-    user_info = res.json()
+
+    user_response = requests.get(url + 'users/{}'.format(user_id))
+    user_info = user_response.json()
+    user_name = user_info.get('name')
+
+    todos_response = requests.get(url + 'todos', params={'userId': user_id})
+    todos = todos_response.json()
+
+    total_tasks = len(todos)
+    completed_tasks = [task for task in todos if task.get('completed')]
+    num_completed_tasks = len(completed_tasks)
+
+    print("Employee {} is done with tasks ({}/{}):".format(user_name, num_completed_tasks, total_tasks))
     
-    todos_url = '{}todos?userId={}'.format(url, user_id)
-    res = requests.get(todos_url)
-    tasks = res.json()
-
-    user_name = user_info.get('username')
-
-    csv_filename = '{}.csv'.format(user_id)
-
-    with open(csv_filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        for task in tasks:
-            task_completed = "True" if task.get('completed') else "False"
-            task_title = task.get('title')
-            csv_writer.writerow([user_id, user_name, task_completed, task_title])
-
-    print("CSV file '{}' has been created successfully.".format(csv_filename))
+    for task in todos:
+        task_title = task.get('title')
+        task_status = "X" if task.get('completed') else " "
+        print("\t {} [{}]".format(task_title, task_status))
