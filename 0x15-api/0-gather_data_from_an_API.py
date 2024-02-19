@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Script that uses JSONPlaceholder API for getting informations about employee """
+""" Script that uses JSONPlaceholder API to get information about employee """
 import requests
 import sys
 
@@ -23,4 +23,3 @@ if __name__ == "__main__":
     print("({}/{}):".format(len(l_task), len(tasks)))
     for task in l_task:
         print("\t {}".format(task.get("title")))
-        
